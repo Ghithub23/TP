@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Quick Start - Leaflet</title>
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+			background-color: beige; /* Fond de page beige */
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+		}
+		.leaflet-container {
+			height: 500px; /* Taille ajustée */
+			width: 700px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+		.text {
+			text-align: center;
+			font-size: 20px;
+			margin-top: 20px;
+			font-family: 'Times New Roman', Times, serif; /* Police Times New Roman */
+			color: brown; /* Texte en marron */
+			font-weight: bold; /* Texte en gras */
+		}
+	</style>
+
+</head>
+<body>
+
+<!-- Texte centré avec style marron, gras et Times New Roman -->
+<div class="text">Voici nos maisons respectives en utilisant Leaflet</div>
+
+<!-- La carte -->
+<div id="map" style="width: 700px; height: 500px;"></div>
+
+<script>
+
+	// Coordonnées des deux maisons
+	const maisonGhitaCoords = [32.894056, -6.907917];
+	const maisonWiamCoords = [32.292336, -6.709487];
+
+	// Initialisation de la carte avec une vue plus éloignée (zoom réduit)
+	const map = L.map('map').fitBounds([maisonGhitaCoords, maisonWiamCoords], {
+		padding: [50, 50]  // Pour réduire légèrement le zoom autour des deux points
+	});
+
+	// Ajout des tuiles OpenStreetMap
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+	// Marqueur pour Maison Ghita
+	const markerGhita = L.marker(maisonGhitaCoords).addTo(map)
+		.bindPopup('<b>Maison Ghita</b>').openPopup();
+
+	// Marqueur pour Maison Wiam
+	const markerWiam = L.marker(maisonWiamCoords).addTo(map)
+		.bindPopup('<b>Maison Wiam</b>');
+
+	// Cercle autour de Maison Ghita (rouge et remplissage semi-transparent)
+	const circleGhita = L.circle(maisonGhitaCoords, {
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.5,
+		radius: 500
+	}).addTo(map).bindPopup('I am a circle.');
+
+	// Cercle autour de Maison Wiam (entièrement jaune)
+	const circleWiam = L.circle(maisonWiamCoords, {
+		color: 'yellow',  // Bordure jaune
+		fillColor: 'yellow',  // Remplissage jaune
+		fillOpacity: 0.5,
+		radius: 500
+	}).addTo(map).bindPopup('I am a yellow circle around Maison Wiam.');
+
+	// Polygone autour de Maison Wiam (entièrement vert)
+	const polygonWiam = L.polygon([
+		[32.29232782152765, -6.709534783425125],
+		[32.292404344921096, -6.709514666857124],
+		[32.29238904024756, -6.709407378494447],
+		[32.2923153510426, -6.7094342005851155]
+	], {
+		color: 'green',  // Bordure verte
+		fillColor: 'green',  // Remplissage vert
+		fillOpacity: 0.5
+	}).addTo(map).bindPopup('I am a green polygon near Maison Wiam.');
+
+	// Polygone autour de Maison Ghita
+	const polygonGhita = L.polygon([
+		[32.894028, -6.907861],
+		[32.894028, -6.907972],
+		[32.89410662488853, -6.907961471480969],
+        [32.89408635521469, -6.907859547537737],
+	]).addTo(map).bindPopup('I am a polygon near Maison Ghita.');
+
+	// Popup lors du clic sur la carte
+	const popup = L.popup();
+
+	function onMapClick(e) {
+		popup
+			.setLatLng(e.latlng)
+			.setContent(`You clicked the map at ${e.latlng.toString()}`)
+			.openOn(map);
+	}
+
+	map.on('click', onMapClick);
+
+</script>
+
+</body>
+</html>
