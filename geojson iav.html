@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,6 +9,7 @@
     <!-- CSS & JS de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="topo.geojson" type="text/javascript"></script>
 
     <style>
         html, body {
@@ -131,7 +133,7 @@
 
     <script>
         // Initialisation de la carte centrée sur le département de topographie
-        const map = L.map('map').setView([33.9768, -6.8659], 17);
+        const map = L.map('map').setView([33.976510225934256, -6.866860148462064], 17);
 
         // Ajout de la couche OpenStreetMap
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -140,14 +142,14 @@
         }).addTo(map);
 
         // Chargement du fichier GeoJSON
-        fetch('commune.geojson')
+        fetch('topo.geojson')
             .then(response => response.json())
             .then(data => {
-                L.geoJSON(data).addTo(map);
+                L.geoJSON(ddepartement).addTo(map);
             });
 
         // Ajout d'un marqueur au centre de la carte
-        const marker = L.marker([33.9768, -6.8659]).addTo(map)
+        const marker = L.marker([33.976510225934256, -6.866860148462064]).addTo(map)
             .bindPopup('<b>Bienvenue !</b><br />Département de topographie.');
 
         // Interaction au clic sur la carte
@@ -161,3 +163,5 @@
 
 </body>
 </html>
+
+
